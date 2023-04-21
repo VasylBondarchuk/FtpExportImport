@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="Tsg" translate="label" sortOrder="10">
+            <label>Tsg</label>
+        </tab>
+        <section id="improvements" translate="label" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+            <class>separator-top</class>
+            <label>Orders Export</label>
+            <tab>Tsg</tab>
+            <resource>Tsg_Improvements::improvements_config</resource>
+            <group id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>General Configuration</label>
+                <field id="enable" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Export Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="ftp_host" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label> FTP Host</label>
+                    <validate>required-entry</validate>
+                </field>
+                <field id="user_name" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label> User name</label>
+                    <validate>required-entry</validate>
+                </field>
+                <field id="user_password" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label> User password</label>
+                    <validate>required-entry</validate>
+                </field>
+                <field id="connection_attempts" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label> Number of connection attempts</label>
+                    <validate>required-entry integer</validate>
+                </field>
+                <field id="order_status" translate="label" type="multiselect" sortOrder="60" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Order status</label>
+                    <source_model>Training\FtpExportImport\Model\OrderStatus</source_model>
+                    <can_be_empty>1</can_be_empty>
+                </field>
+                <field id="products_types" translate="label" type="multiselect" sortOrder="70" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Ordered Products Types</label>
+                    <source_model>Training\FtpExportImport\Model\ProductTypes</source_model>
+                    <can_be_empty>1</can_be_empty>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

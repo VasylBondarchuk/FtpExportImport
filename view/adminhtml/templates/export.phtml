@@ -1,0 +1,30 @@
+<?= $escaper->escapeHtml($block->getMessage()); ?>
+
+<?php
+
+$orders = $block->getOrdersDetails();
+
+//print_r($block->getProductsData($order));
+
+$ordersId = [];
+
+foreach ($orders as $order => $item) {
+    $ordersId[] = $item['entity_id'];
+}
+
+print_r($ordersId);
+
+echo "<br>";
+
+foreach ($ordersId as $id) {
+    $order = $block->getOrderData($id);
+
+    foreach ($order->getAllVisibleItems() as $item) {
+        if ($block->getProductsData($order)) { echo "Order id = $id ".($item->getProductType())."<br>";
+        }
+    }
+}
+echo "</br>";
+print_r($block->getAllProductTypes());
+echo "</br>";
+print_r($block->getAllOrderStatuses());
