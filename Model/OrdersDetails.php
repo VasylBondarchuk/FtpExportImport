@@ -2,18 +2,18 @@
 
 declare(strict_types = 1);
 
-namespace Training\FtpExportImport\Controller\Adminhtml\Display;
+namespace Training\FtpExportImport\Model;
 
 use Magento\Sales\Model\ResourceModel\Order\CollectionFactory;
 use Magento\Sales\Api\OrderRepositoryInterface;
-use \Magento\Sales\Model\Order;
+use Magento\Sales\Model\Order;
 
 class OrdersDetails
 {
-    private $orderCollectionFactory;
-    private $orderRepository;
+    private CollectionFactory $orderCollectionFactory;
+    private OrderRepositoryInterface $orderRepository;
     private $configs;
-    private $order;
+    private Order $order;
 
     public function __construct(
         CollectionFactory $orderCollectionFactory,

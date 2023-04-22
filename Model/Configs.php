@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Training\FtpExportImport\Controller\Adminhtml\Display;
+namespace Training\FtpExportImport\Model;
 
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Store\Model\ScopeInterface;

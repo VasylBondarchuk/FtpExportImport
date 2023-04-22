@@ -6,10 +6,10 @@ namespace Training\FtpExportImport\Block\Adminhtml;
 
 use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Element\Template\Context;
-use Training\FtpExportImport\Controller\Adminhtml\Display\FtpConnection;
+use Training\FtpExportImport\Model\FtpConnection;
 use Magento\Sales\Model\ResourceModel\Order\CollectionFactory;
 use Magento\Sales\Api\OrderRepositoryInterface;
-use Training\FtpExportImport\Controller\Adminhtml\Display\Configs;
+use Training\FtpExportImport\Controller\Adminhtml\Index\Configs;
 use Training\FtpExportImport\Model\OrderStatus;
 use Training\FtpExportImport\Model\ProductTypes;
 

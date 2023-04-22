@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Training\FtpExportImport\Controller\Adminhtml\Display;
+namespace Training\FtpExportImport\Model;
 
 use Magento\Framework\Filesystem\Driver\File;
 use Magento\Framework\File\Csv;
@@ -37,12 +37,12 @@ class CsvExport
 
     public function getCsvName()
     {
-        return 'export_order_'.date("Y-m-d H:i:s").'.csv';
+        return 'export_order_'.date("Y-m-d-H:i:s").'.csv';
     }
 
     public function getCsvPath()
     {
-        return $this->directoryList->getPath(DirectoryList::TMP) . DS . $this->getCsvName();
+        return $this->directoryList->getPath(DirectoryList::TMP) . DIRECTORY_SEPARATOR . $this->getCsvName();
     }
 
     public function getCsvContent() : array

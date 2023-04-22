@@ -6,7 +6,7 @@ namespace Training\FtpExportImport\Block\Adminhtml;
 
 use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Element\Template\Context;
-use Training\FtpExportImport\Controller\Adminhtml\Display\CsvValidator;
+use Training\FtpExportImport\Controller\Adminhtml\Index\CsvValidator;
 use \Magento\InventoryApi\Api\SourceRepositoryInterface;
 
 class Import extends Template

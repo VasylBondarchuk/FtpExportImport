@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Training\FtpExportImport\Controller\Adminhtml\Display;
+namespace Training\FtpExportImport\Model;
 
 use \Magento\Framework\Filesystem\Driver\File;
 use \Magento\Framework\File\Csv;

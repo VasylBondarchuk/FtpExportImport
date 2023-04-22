@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
     <menu>
-        <add id="Tsg_Improvements::menu" title="Tsg" module="Tsg_Improvements" sortOrder="10" resource="Magento_Backend::content"/>
-        <add id="Tsg_Improvements::menu_submenu_item_2" title="Export Orders" module="Tsg_Improvements" sortOrder="20" parent="Tsg_Improvements::menu" action="logfiles/display/export" resource="Tsg_Improvements::menu_submenu_item"/>
-        <add id="Tsg_Improvements::menu_submenu_item_3" title="Import Data" module="Tsg_Improvements" sortOrder="30" parent="Tsg_Improvements::menu" action="logfiles/display/import" resource="Tsg_Improvements::menu_submenu_item"/>
+        <add id="Training_FtpExportImport::menu" title="FTP-ExportImport" module="Training_FtpExportImport" sortOrder="10" resource="Magento_Backend::content"/>
+        <add id="Training_FtpExportImport::menu_submenu_item_2" title="Export Orders" module="Training_FtpExportImport" sortOrder="20" parent="Training_FtpExportImport::menu" action="export/index/export" resource="Training_FtpExportImport::menu_submenu_item"/>
+        <add id="Training_FtpExportImport::menu_submenu_item_3" title="Import Data" module="Training_FtpExportImport" sortOrder="30" parent="Training_FtpExportImport::menu" action="import/index/import" resource="Training_FtpExportImport::menu_submenu_item"/>
     </menu>
 </config>

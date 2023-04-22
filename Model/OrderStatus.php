@@ -2,29 +2,33 @@
 
 namespace Training\FtpExportImport\Model;
 
-class OrderStatus implements \Magento\Framework\Option\ArrayInterface
+use Magento\Sales\Model\Order;
+use Magento\Sales\Model\Order\Config;
+use Magento\Framework\Option\ArrayInterface;
+
+class OrderStatus implements ArrayInterface
 {
-    protected $_stateStatuses = [
-        \Magento\Sales\Model\Order::STATE_NEW,
-        \Magento\Sales\Model\Order::STATE_PROCESSING,
-        \Magento\Sales\Model\Order::STATE_COMPLETE,
-        \Magento\Sales\Model\Order::STATE_CLOSED,
-        \Magento\Sales\Model\Order::STATE_CANCELED,
-        \Magento\Sales\Model\Order::STATE_HOLDED,
+    const ORDER_STATUSES = [
+        Order::STATE_NEW,
+        Order::STATE_PROCESSING,
+        Order::STATE_COMPLETE,
+        Order::STATE_CLOSED,
+        Order::STATE_CANCELED,
+        Order::STATE_HOLDED,
     ];
 
-    protected $_orderConfig;
-
-    public function __construct(\Magento\Sales\Model\Order\Config $orderConfig)
+    private $orderConfig;
+    
+    public function __construct(Config $orderConfig)
     {
-        $this->_orderConfig = $orderConfig;
+        $this->orderConfig = $orderConfig;
     }
 
     public function toOptionArray()
     {
-        $statuses = $this->_stateStatuses
-            ? $this->_orderConfig->getStateStatuses($this->_stateStatuses)
-            : $this->_orderConfig->getStatuses();
+        $statuses = self::ORDER_STATUSES
+            ? $this->orderConfig->getStateStatuses(self::ORDER_STATUSES)
+            : $this->orderConfig->getStatuses();
 
         $options = [['value' => '', 'label' => '']];
 
@@ -36,15 +40,15 @@ class OrderStatus implements \Magento\Framework\Option\ArrayInterface
 
     public function getAllStatuses()
     {
-        $statuses = "";
+        $statuses = '';
 
         foreach ($this->toOptionArray() as $items) {
             foreach ($items as $key => $value) {
-                if ($key=="value") {
-                    $statuses .= $value.",";
+                if ($key == 'value') {
+                    $statuses .= $value . ',';
                 }
             }
         }
-        return trim($statuses, ",");
+        return trim($statuses, ',');
     }
 }

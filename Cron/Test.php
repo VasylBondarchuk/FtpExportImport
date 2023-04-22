@@ -6,7 +6,7 @@ class Test
 {
     protected $exportOrders;
 
-    public function __construct(\Training\FtpExportImport\Controller\Adminhtml\Display\Export $exportOrders)
+    public function __construct(\Training\FtpExportImport\Controller\Adminhtml\Index\Export $exportOrders)
     {
         $this->exportOrders = $exportOrders;
     }

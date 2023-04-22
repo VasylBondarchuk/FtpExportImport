@@ -1,8 +1,11 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:App/etc/routes.xsd">
     <router id="admin">
-        <route id="logfiles" frontName="logfiles">
-            <module name="Tsg_Improvements"/>
+        <route id="export" frontName="export">
+            <module name="Training_FtpExportImport"/>
+        </route>
+        <route id="import" frontName="import">
+            <module name="Training_FtpExportImport"/>
         </route>
     </router>
 </config>

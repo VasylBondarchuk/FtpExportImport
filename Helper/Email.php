@@ -9,7 +9,6 @@ use Magento\Framework\Escaper;
 use Magento\Framework\Mail\Template\TransportBuilder;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Store\Model\StoreManagerInterface;
-use Training\FtpExportImport\Controller\Adminhtml\Display\FailureEmail;
 
 class Email extends AbstractHelper
 {
@@ -40,7 +39,12 @@ class Email extends AbstractHelper
         parent::__construct($context);
     }
 
-    public function sendEmail(array $senderDetails, string $recipientEmail, string $templateIdentifier, array $templateOptions, array $templateVars)
+    public function sendEmail(
+            array $senderDetails,
+            string $recipientEmail,
+            string $templateIdentifier,
+            array $templateOptions,
+            array $templateVars)
         {
         try {
             $this->inlineTranslation->suspend();

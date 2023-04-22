@@ -2,14 +2,14 @@
 
 declare(strict_types = 1);
 
-namespace Training\FtpExportImport\Controller\Adminhtml\Display;
+namespace Training\FtpExportImport\Model;
 
 use Magento\Framework\Filesystem\Io\Ftp;
 
 class FtpConnection
 {
-    private $ftp;
-    private $ftpConnFailureReason;
+    private Ftp $ftp;
+    private string $ftpConnFailureReason;
     private $ftpConnFailureEmail;
     private $ftpDetails;
 
@@ -24,12 +24,12 @@ class FtpConnection
     }
 
     public function ftpConnection()
-    {
-        $connection = false;
+    {        
         try {
             $connection = $this->ftp->open($this->ftpDetails->getFtpDetails());
         } catch (\Exception $e) {
             $this->ftpConnFailureReason = $e->getMessage();
+            $connection = false;
         }
         return $connection;
     }
@@ -46,7 +46,7 @@ class FtpConnection
         return false;
     }
 
-    public function getConnFailureReason()
+    public function getConnFailureReason() : string
     {
         return $this->ftpConnFailureReason;
     }

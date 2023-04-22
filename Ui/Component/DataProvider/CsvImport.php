@@ -5,10 +5,10 @@ declare(strict_types = 1);
 namespace Training\FtpExportImport\Ui\Component\DataProvider;
 
 use \Magento\Ui\DataProvider\AbstractDataProvider;
-use \Training\FtpExportImport\Controller\Adminhtml\Display\Import;
+use \Training\FtpExportImport\Controller\Adminhtml\Index\Import;
 use \Magento\Framework\Filesystem\Driver\File;
 use \Magento\Framework\File\Csv;
-use Training\FtpExportImport\Controller\Adminhtml\Display\CsvValidator;
+use Training\FtpExportImport\Controller\Adminhtml\Index\CsvValidator;
 
 class CsvImport extends AbstractDataProvider
 {

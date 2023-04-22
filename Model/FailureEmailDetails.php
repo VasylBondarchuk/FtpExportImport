@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Training\FtpExportImport\Controller\Adminhtml\Display;
+namespace Training\FtpExportImport\Model;
 
 use Training\FtpExportImport\Helper\Email;
 use Magento\Store\Model\StoreManagerInterface;
@@ -58,9 +58,9 @@ class FailureEmailDetails
         return $templateIdentifier;
     }
 
-    public function getLink($pathFromBaseUrl = "") : string
+    public function getLink($pathFromBaseUrl = '') : string
     {
-        return $this->urlInterface->getBaseUrl().$pathFromBaseUrl;
+        return $this->urlInterface->getBaseUrl() . $pathFromBaseUrl;
     }
 
     public function sendFailureEmail($senderDetails, $recipientEmail, $templateIdentifier, $templateOptions, $templateVars)

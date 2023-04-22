@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Training\FtpExportImport\Controller\Adminhtml\Display;
+namespace Training\FtpExportImport\Model;
 
 use \Magento\Framework\Filesystem\Driver\File;
 use \Magento\Framework\File\Csv;
@@ -61,7 +61,7 @@ class CsvValidator
 
     public function getRawCsvData(): array
     {
-        $filePath = BP. DS .'pub' . DS .'media'. DS . 'import'. DS .'local_import.csv';
+        $filePath = BP. DIRECTORY_SEPARATOR .'pub' . DIRECTORY_SEPARATOR .'media'. DIRECTORY_SEPARATOR . 'import'. DIRECTORY_SEPARATOR .'local_import.csv';
         $data = [];
 
         if(!$this->isCsvHeaderCorrect($filePath)) return $data;
