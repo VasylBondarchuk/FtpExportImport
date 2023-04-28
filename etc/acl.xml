@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Acl/etc/acl.xsd">
+    <acl>
+        <resources>
+            <resource id="Magento_Backend::admin">
+                <resource id="Training_FtpExportImport::menu" title="Ftp Export Import" translate="title" sortOrder="10">
+                    <resource id="Training_FtpExportImport::export" title="Ftp Export" translate="title" sortOrder="10" />
+                    <resource id="Training_FtpExportImport::import" title="Ftp Import" translate="title" sortOrder="20" />                    
+                </resource>
+            </resource>
+        </resources>
+    </acl>
+</config>
