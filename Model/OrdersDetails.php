@@ -6,20 +6,37 @@ namespace Training\FtpExportImport\Model;
 
 use Magento\Sales\Model\ResourceModel\Order\CollectionFactory;
 use Magento\Sales\Api\OrderRepositoryInterface;
-use Magento\Sales\Model\Order;
+use Magento\Sales\Api\Data\OrderInterface;
+use Magento\Sales\Model\ResourceModel\Order\Collection;
 
 class OrdersDetails
 {
+    /**
+     * 
+     * @var CollectionFactory
+     */
     private CollectionFactory $orderCollectionFactory;
+    /**
+     * 
+     * @var OrderRepositoryInterface
+     */
     private OrderRepositoryInterface $orderRepository;
+    /**
+     * 
+     * @var type
+     */
     private $configs;
-    private Order $order;
+    /**
+     * 
+     * @var OrderInterface
+     */
+    private OrderInterface $order;
 
     public function __construct(
         CollectionFactory $orderCollectionFactory,
         OrderRepositoryInterface $orderRepository,
         Configs $configs,
-        Order $order
+        OrderInterface $order
     )
     {
         $this->orderCollectionFactory = $orderCollectionFactory;
@@ -28,51 +45,50 @@ class OrdersDetails
         $this->order = $order;
     }
 
-    public function getSelectedOrdersDetails()
+    /**
+     * 
+     * @return Collection
+     */
+    public function getSelectedOrders() : Collection
     {
         return $this->orderCollectionFactory->create()
             ->addAttributeToFilter('status', ['in' => $this->configs->getSelectedOrderStatus()])
             ->addAttributeToFilter('entity_id', ['in' => $this->getSelectedOrdersIds()]);
     }
 
+    /**
+     * 
+     * @return array
+     */
     public function getAllOrdersIds(): array
     {
-        $allOrdersIds = [];
-        $allOrders = $this->orderCollectionFactory->create()->getData();
-
-        foreach ($allOrders as $order => $item) {
-            $allOrdersIds[] = $item['entity_id'];
+        $orderIds = [];
+        $orderCollection = $this->orderCollectionFactory->create();
+        $orderCollection->addFieldToSelect('entity_id');
+        foreach ($orderCollection as $order) {
+            $orderIds[] = $order->getId();
         }
-        return $allOrdersIds;
+        return $orderIds;
     }
-
-    public function getOrderDataById(string $orderId)
-    {
-        try {
-            $orderData = $this->orderRepository->get($orderId);
-        } catch (\Magento\Framework\Exception\NoSuchEntityException $e) {
-            throw new \Magento\Framework\Exception\LocalizedException(__('This order no longer exists.'));
-        }
-        return $orderData;
-    }
-
-    // Returns true if the order contains at least one product of the selected type
-    public function isProductTypeInOrder($order): bool
-    {
-        $orderItems = $order->getItemsCollection($this->configs->getSelectedProductsTypes(), true);
-
-        foreach ($orderItems as $orderItem) {
-            return true;
+           
+    // Check if the order contains selected product types
+    public function isProductTypeInOrder(OrderInterface $order): bool
+    {        
+        /** @var \Magento\Sales\Api\Data\OrderItemInterface $item */
+        foreach ($order->getItems() as $item) {
+            if (in_array($item->getProductType(), explode(',', $this->configs->getSelectedProductsTypes()))) {
+                return true;
+            }
         }
         return false;
-    }
+    }    
 
-    // Get ids of all orders ids, containing selected product types
+    // Get id's of orders, containing selected product types
     public function getSelectedOrdersIds(): array
     {
         $selectedOrdersIds = [];
         foreach ($this->getAllOrdersIds() as $orderId) {
-            if ($this->isProductTypeInOrder($this->getOrderDataById($orderId))) {
+            if ($this->isProductTypeInOrder($this->orderRepository->get($orderId))) {
                 $selectedOrdersIds[] = $orderId;
             }
         }

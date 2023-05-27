@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types = 1);
 
 namespace Training\FtpExportImport\Controller\Adminhtml\Index;
@@ -16,8 +15,8 @@ class Import extends \Magento\Backend\App\Action
     private $resultPageFactory = false;
     private FtpConnection $ftpConnection;
     private Ftp $ftp;       
-    private $sourceItemFactory;
-    private $csvValidator;
+    private SourceItemInterfaceFactory $sourceItemFactory;
+    private CsvValidator $csvValidator;
 
     public function __construct(
         PageFactory $resultPageFactory,
@@ -48,16 +47,13 @@ class Import extends \Magento\Backend\App\Action
     {
         $localCsvFilePath = BP. DIRECTORY_SEPARATOR .'pub' . DIRECTORY_SEPARATOR .'media'. DIRECTORY_SEPARATOR . 'import'. DIRECTORY_SEPARATOR .'local_import.csv';
         $ftpFilePath = 'import.csv';
-
         // make a connection
         if (!$this->ftpConnection->isConnSuccessful()) {
             $this->ftpConnection->sendFtpConnFailureEmail();
             return;
         }
-
         $this->ftp->read($ftpFilePath, $localCsvFilePath);
         $this->ftp->close();
-
         return $localCsvFilePath;
     }
 

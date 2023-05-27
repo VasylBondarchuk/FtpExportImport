@@ -8,9 +8,12 @@
             <class>separator-top</class>
             <label>Orders Export</label>
             <tab>Training</tab>
-            <resource>Training_FtpExportImport::improvements_config</resource>
-            <group id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
-                <label>General Configuration</label>
+            <resource>Training_FtpExportImport::menu</resource>
+            
+            <!--FTP Connection Details -->
+            
+            <group id="ftp_connection_details" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>FTP Connection Details</label>
                 <field id="enable" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
                     <label>Export Enabled</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
@@ -31,6 +34,13 @@
                     <label> Number of connection attempts</label>
                     <validate>required-entry integer</validate>
                 </field>
+            </group>
+            
+            <!--Exported Orders Details -->    
+                        
+            <group id="exported_orders_details" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>Exported Orders Details</label>
+                
                 <field id="order_status" translate="label" type="multiselect" sortOrder="60" showInDefault="1" showInWebsite="0" showInStore="0">
                     <label>Order status</label>
                     <source_model>Training\FtpExportImport\Model\OrderStatus</source_model>

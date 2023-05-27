@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types = 1);
 
 namespace Training\FtpExportImport\Model;
@@ -11,18 +10,37 @@ use Training\FtpExportImport\Model\ProductTypes;
 
 class Configs
 {
-    const FTP_HOST = 'improvements/general/ftp_host';
-    const FTP_USER_NAME = 'improvements/general/user_name';
-    const FTP_USER_PASS = 'improvements/general/user_password';
-    const FTP_CONN_ATTEMPTS = 'improvements/general/connection_attempts';
-    const DEFAULT_FTP_CONN_ATTEMPTS = 5;
-    const ORDER_STATUS = 'improvements/general/order_status';
-    const PRODUCTS_TYPES = 'improvements/general/products_types';
-    const MULTISELECT_VALUES = [self::ORDER_STATUS,self::PRODUCTS_TYPES];
+    const FTP_CONFIGS_PATH = 'admin/system_config/edit/section/export_import_configuration';
+    
+    // FTP Connection Details
+    const EXPORT_ENABLED = 'export_import_configuration/ftp_connection_details/enable';
+    const FTP_HOST = 'export_import_configuration/ftp_connection_details/ftp_host';
+    const FTP_USER_NAME = 'export_import_configuration/ftp_connection_details/user_name';
+    const FTP_USER_PASS = 'export_import_configuration/ftp_connection_details/user_password';
+    const FTP_CONN_ATTEMPTS = 'export_import_configuration/ftp_connection_details/connection_attempts';
+    const DEFAULT_MAX_CONNECTION_ATEMPTS = 5;
+    
+    // Exported Orders Details
+    const ORDER_STATUS = 'export_import_configuration/exported_orders_details/order_status';
+    const PRODUCTS_TYPES = 'export_import_configuration/exported_orders_details/products_types';
+    const MULTISELECT_VALUES = [self::ORDER_STATUS, self::PRODUCTS_TYPES];
+    
 
-    private $scopeConfig;
-    private $orderStatuses;
-    private $productTypes;
+    /**
+     * 
+     * @var ScopeConfigInterface
+     */    
+    private ScopeConfigInterface $scopeConfig;
+    /**
+     * 
+     * @var OrderStatus
+     */    
+    private OrderStatus $orderStatuses;
+    /**
+     * 
+     * @var ProductTypes
+     */
+    private ProductTypes $productTypes;
 
     public function __construct(
         ScopeConfigInterface $scopeConfig,
@@ -39,11 +57,16 @@ class Configs
         return $this->scopeConfig->getValue($configPath, ScopeInterface::SCOPE_STORE);
     }
 
+    public function isExportEnabled(): bool
+    {
+        return (bool)$this->getConfigs(self::EXPORT_ENABLED);
+    }
+    
     public function getFtpHost(): string
     {
         return $this->getConfigs(self::FTP_HOST);
-    }
-
+    }   
+    
     public function getFtpUserName(): string
     {
         return $this->getConfigs(self::FTP_USER_NAME);
@@ -56,21 +79,20 @@ class Configs
 
     public function getConnAttempts(): string
     {
-        return $this->getConfigs(self::FTP_CONN_ATTEMPTS);
+        return $this->getConfigs(self::FTP_CONN_ATTEMPTS)
+               ?? self::DEFAULT_MAX_CONNECTION_ATEMPTS;
     }
 
     public function getSelectedOrderStatus()
     {
         return $this->getConfigs(self::ORDER_STATUS)
-               ? $this->getConfigs(self::ORDER_STATUS)
-               : $this->orderStatuses->getAllStatuses();
+               ?? $this->orderStatuses->getAllStatuses();
     }
 
-    public function getSelectedProductsTypes()
+    public function getSelectedProductsTypes(): string
     {
         return $this->getConfigs(self::PRODUCTS_TYPES)
-             ? $this->getConfigs(self::PRODUCTS_TYPES)
-             : $this->productTypes->getAllProductTypes();
+               ?? $this->productTypes->getAllProductTypes();
     }
 
     public function getMultiselectValues()

@@ -17,7 +17,7 @@ class OrderStatus implements ArrayInterface
         Order::STATE_HOLDED,
     ];
 
-    private $orderConfig;
+    private Config $orderConfig;
     
     public function __construct(Config $orderConfig)
     {

@@ -2,28 +2,12 @@
 
 namespace Training\FtpExportImport\Model;
 
-use Magento\Catalog\Model\Product;
 use Magento\Catalog\Model\Product\Type\Pool;
-use Magento\Catalog\Model\Product\Type\Price;
-use Magento\Catalog\Model\Product\Type\Price\Factory as PriceFactory;
-use Magento\Catalog\Model\Product\Type\Simple;
 use Magento\Catalog\Model\ProductTypes\ConfigInterface;
 use Magento\Framework\Data\OptionSourceInterface;
-use Magento\Framework\Pricing\PriceInfo\Factory as PriceInfoFactory;
 
 class ProductTypes implements OptionSourceInterface
-{
-    const TYPE_SIMPLE = 'simple';
-
-    const TYPE_BUNDLE = 'bundle';
-
-    const TYPE_VIRTUAL = 'virtual';
-
-    const DEFAULT_TYPE = 'simple';
-
-    const DEFAULT_TYPE_MODEL = Simple::class;
-
-    const DEFAULT_PRICE_MODEL = Price::class;
+{   
 
     /**
      * @var ConfigInterface
@@ -64,19 +48,7 @@ class ProductTypes implements OptionSourceInterface
      * @var Pool
      */
     protected $_productTypePool;
-
-    /**
-     * Price model factory
-     *
-     * @var PriceFactory
-     */
-    protected $_priceFactory;
-
-    /**
-     * @var PriceInfoFactory
-     */
-    protected $_priceInfoFactory;
-
+    
     /**
      * Construct
      *
@@ -87,75 +59,11 @@ class ProductTypes implements OptionSourceInterface
      */
     public function __construct(
         ConfigInterface $config,
-        Pool $productTypePool,
-        PriceFactory $priceFactory,
-        PriceInfoFactory $priceInfoFactory
+        Pool $productTypePool        
     ) {
         $this->_config = $config;
-        $this->_productTypePool = $productTypePool;
-        $this->_priceFactory = $priceFactory;
-        $this->_priceInfoFactory = $priceInfoFactory;
-    }
-
-    /**
-     * Factory to product singleton product type instances
-     *
-     * @param \Magento\Catalog\Api\Data\ProductInterface $product
-     * @return \Magento\Catalog\Model\Product\Type\AbstractType
-     */
-    public function factory($product)
-    {
-        $types = $this->getTypes();
-        $typeId = $product->getTypeId();
-
-        if (!empty($types[$typeId]['model'])) {
-            $typeModelName = $types[$typeId]['model'];
-        } else {
-            $typeModelName = self::DEFAULT_TYPE_MODEL;
-            $typeId = self::DEFAULT_TYPE;
-        }
-
-        $typeModel = $this->_productTypePool->get($typeModelName);
-        $typeModel->setConfig($types[$typeId]);
-        $typeModel->setTypeId($typeId);
-
-        return $typeModel;
-    }
-
-    /**
-     * Product type price model factory
-     *
-     * @param string $productType
-     * @return \Magento\Catalog\Model\Product\Type\Price
-     */
-    public function priceFactory($productType)
-    {
-        if (isset($this->_priceModels[$productType])) {
-            return $this->_priceModels[$productType];
-        }
-
-        $types = $this->getTypes();
-
-        if (!empty($types[$productType]['price_model'])) {
-            $priceModelName = $types[$productType]['price_model'];
-        } else {
-            $priceModelName = self::DEFAULT_PRICE_MODEL;
-        }
-
-        $this->_priceModels[$productType] = $this->_priceFactory->create($priceModelName);
-        return $this->_priceModels[$productType];
-    }
-
-    /**
-     * Get Product Price Info object
-     *
-     * @param Product $saleableItem
-     * @return \Magento\Framework\Pricing\PriceInfoInterface
-     */
-    public function getPriceInfo(Product $saleableItem)
-    {
-        return $this->_priceInfoFactory->create($saleableItem);
-    }
+        $this->_productTypePool = $productTypePool;        
+    }    
 
     /**
      * Get product type labels array
@@ -236,61 +144,7 @@ class ProductTypes implements OptionSourceInterface
             $this->_types = $productTypes;
         }
         return $this->_types;
-    }
-
-    /**
-     * Return composite product type Ids
-     *
-     * @return array
-     */
-    public function getCompositeTypes()
-    {
-        if ($this->_compositeTypes === null) {
-            $this->_compositeTypes = [];
-            $types = $this->getTypes();
-            foreach ($types as $typeId => $typeInfo) {
-                if (array_key_exists('composite', $typeInfo) && $typeInfo['composite']) {
-                    $this->_compositeTypes[] = $typeId;
-                }
-            }
-        }
-        return $this->_compositeTypes;
-    }
-
-    /**
-     * Return product types by type indexing priority
-     *
-     * @return array
-     */
-    public function getTypesByPriority()
-    {
-        if ($this->_typesPriority === null) {
-            $this->_typesPriority = [];
-            $simplePriority = [];
-            $compositePriority = [];
-
-            $types = $this->getTypes();
-            foreach ($types as $typeId => $typeInfo) {
-                $priority = isset($typeInfo['index_priority']) ? abs((int) $typeInfo['index_priority']) : 0;
-                if (!empty($typeInfo['composite'])) {
-                    $compositePriority[$typeId] = $priority;
-                } else {
-                    $simplePriority[$typeId] = $priority;
-                }
-            }
-
-            asort($simplePriority, SORT_NUMERIC);
-            asort($compositePriority, SORT_NUMERIC);
-
-            foreach (array_keys($simplePriority) as $typeId) {
-                $this->_typesPriority[$typeId] = $types[$typeId];
-            }
-            foreach (array_keys($compositePriority) as $typeId) {
-                $this->_typesPriority[$typeId] = $types[$typeId];
-            }
-        }
-        return $this->_typesPriority;
-    }
+    }      
 
     /**
      * @inheritdoc
@@ -302,15 +156,14 @@ class ProductTypes implements OptionSourceInterface
 
     public function getAllProductTypes()
     {
-        $types= "";
-
+        $types= '';
         foreach ($this->toOptionArray() as $items) {
             foreach ($items as $key => $value) {
-                if ($key=="value") {
-                    $types .= $value.",";
+                if ($key == 'value') {
+                    $types .= $value .',';
                 }
             }
         }
-        return trim($types, ",");
+        return trim($types, ',');
     }
 }

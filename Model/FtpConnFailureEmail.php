@@ -1,8 +1,9 @@
 <?php
-
 declare(strict_types = 1);
 
 namespace Training\FtpExportImport\Model;
+
+use Training\FtpExportImport\Model\Configs;
 
 class FtpConnFailureEmail extends FailureEmailDetails
 {
@@ -15,7 +16,7 @@ class FtpConnFailureEmail extends FailureEmailDetails
             $this->getRecipientEmail('email@email.com'),
             $this->getTemplateIdentifier('email_ftp_failure_template'),
             $this->getTemplateOptions(),
-            $this->getTemplateVars(['Customer', $this->getLink('admin/admin/system_config/'), "TSG", $failureReason])
+            $this->getTemplateVars(['Customer', $this->getLink(Configs::FTP_CONFIGS_PATH), "TSG", $failureReason])
         );
     }
 }

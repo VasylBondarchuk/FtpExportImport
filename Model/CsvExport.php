@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types = 1);
 
 namespace Training\FtpExportImport\Model;
@@ -11,23 +10,51 @@ use Magento\Framework\App\Helper\Context;
 
 class CsvExport
 {
-    private $driverFile;
-    private $ordersDetails;
-    private $csvProcessor;
-    private $directoryList;
+    /**
+     * 
+     * @var File
+     */
+    private File $file;
+    /**
+     * 
+     * @var OrdersDetails
+     */
+    private OrdersDetails $ordersDetails;
+    /**
+     * 
+     * @var Csv
+     */
+    private Csv $csvProcessor;
+    /**
+     * 
+     * @var DirectoryList
+     */
+    private DirectoryList $directoryList;
+    /**
+     * 
+     * @var type
+     */
     private $logger;
+    /**
+     * 
+     * @var type
+     */
     private $csvCreationFailureReason;
+    /**
+     * 
+     * @var type
+     */
     private $csvExportFailureEmail;
 
     public function __construct(
-        File $driverFile,
+        File $file,
         OrdersDetails $ordersDetails,
         Csv $csvProcessor,
         DirectoryList $directoryList,
         CsvExportFailureEmail $csvExportFailureEmail,
         Context $context
     ) {
-        $this->driverFile = $driverFile;
+        $this->file = $file;
         $this->ordersDetails = $ordersDetails;
         $this->csvProcessor = $csvProcessor;
         $this->directoryList = $directoryList;
@@ -35,16 +62,28 @@ class CsvExport
         $this->csvExportFailureEmail = $csvExportFailureEmail;
     }
 
-    public function getCsvName()
+    /**
+     * 
+     * @return string
+     */    
+    public function getCsvName(): string
     {
         return 'export_order_'.date("Y-m-d-H:i:s").'.csv';
     }
 
-    public function getCsvPath()
+    /**
+     * 
+     * @return string
+     */
+    public function getCsvPath() : string
     {
         return $this->directoryList->getPath(DirectoryList::TMP) . DIRECTORY_SEPARATOR . $this->getCsvName();
     }
 
+    /**
+     * 
+     * @return array
+     */
     public function getCsvContent() : array
     {
         // csv header
@@ -53,10 +92,10 @@ class CsvExport
             'status' => __('Status'),
             'total' => __('Total')
         ];
-        foreach ($this->ordersDetails->getSelectedOrdersDetails() as $order) {
+        foreach ($this->ordersDetails->getSelectedOrders() as $order) {
             $content[] = [
                 $order->getId(),
-                $order->getStatus(),
+                $order->getData('status'),
                 $order->getBaseGrandTotal()
             ];
         }
@@ -74,19 +113,19 @@ class CsvExport
         return $csvProcessor;
     }
 
-    public function createCsvFile()
+    public function createCsvFile() : string
     {
         $this->csvProcessor->setEnclosure('"')->setDelimiter(',');
         $this->appendDataToCsv($this->csvProcessor, $this->getCsvPath(), $this->getCsvContent());
         return $this->getCsvPath();
     }
 
-    public function getCsvCreationFailureReason()
+    public function getCsvCreationFailureReason() : ?string
     {
         return $this->csvCreationFailureReason;
     }
 
-    public function sendCsvCreationFailureEmail()
+    public function sendCsvCreationFailureEmail() : void
     {
         $this->csvExportFailureEmail->sendCsvCreationFailureEmail($this->getCsvCreationFailureReason());
     }
