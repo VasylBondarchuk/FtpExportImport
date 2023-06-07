@@ -1,6 +1,6 @@
 <?php
 
-namespace Training\FtpExportImport\Helper;
+namespace Training\FtpOrderExport\Helper;
 
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;

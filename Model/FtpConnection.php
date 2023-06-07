@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Training\FtpExportImport\Model;
+namespace Training\FtpOrderExport\Model;
 
 use Magento\Framework\Filesystem\Io\Ftp;
 

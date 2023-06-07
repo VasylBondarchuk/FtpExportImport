@@ -7,7 +7,7 @@
                 <item name="addRedirectToSettingsMessage" xsi:type="array">
                     <item name="renderer" xsi:type="const">\Magento\Framework\View\Element\Message\Renderer\BlockRenderer::CODE</item>
                     <item name="data" xsi:type="array">
-                        <item name="template" xsi:type="string">Training_FtpExportImport::messages/redirect_to_ftp_settings_page.phtml</item>
+                        <item name="template" xsi:type="string">Training_FtpOrderExport::messages/redirect_to_ftp_settings_page.phtml</item>
                     </item>
                 </item>
             </argument>

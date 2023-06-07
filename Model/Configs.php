@@ -1,16 +1,16 @@
 <?php
 declare(strict_types = 1);
 
-namespace Training\FtpExportImport\Model;
+namespace Training\FtpOrderExport\Model;
 
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Store\Model\ScopeInterface;
-use Training\FtpExportImport\Model\OrderStatus;
-use Training\FtpExportImport\Model\ProductTypes;
+use Training\FtpOrderExport\Model\OrderStatus;
+use Training\FtpOrderExport\Model\OrderedProductTypes;
 
 class Configs
 {
-    const FTP_CONFIGS_PATH = 'admin/system_config/edit/section/export_import_configuration';
+    const FTP_CONFIGS_PATH = 'admin/system_config/edit/section/export_import_configuration/';
     
     // FTP Connection Details
     const EXPORT_ENABLED = 'export_import_configuration/ftp_connection_details/enable';
@@ -38,18 +38,18 @@ class Configs
     private OrderStatus $orderStatuses;
     /**
      * 
-     * @var ProductTypes
+     * @var OrderedProductTypes
      */
-    private ProductTypes $productTypes;
+    private OrderedProductTypes $OrderedProductTypes;
 
     public function __construct(
         ScopeConfigInterface $scopeConfig,
         OrderStatus $orderStatuses,
-        ProductTypes $productTypes
+        OrderedProductTypes $OrderedProductTypes
     ) {
         $this->scopeConfig= $scopeConfig;
         $this->orderStatuses = $orderStatuses;
-        $this->productTypes = $productTypes;
+        $this->OrderedProductTypes = $OrderedProductTypes;
     }
 
     public function getConfigs(string $configPath): ?string
@@ -92,7 +92,7 @@ class Configs
     public function getSelectedProductsTypes(): string
     {
         return $this->getConfigs(self::PRODUCTS_TYPES)
-               ?? $this->productTypes->getAllProductTypes();
+               ?? $this->OrderedProductTypes->getAllOrderedProductTypes();
     }
 
     public function getMultiselectValues()

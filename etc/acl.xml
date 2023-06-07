@@ -3,9 +3,8 @@
     <acl>
         <resources>
             <resource id="Magento_Backend::admin">
-                <resource id="Training_FtpExportImport::menu" title="Ftp Export Import" translate="title" sortOrder="10">
-                    <resource id="Training_FtpExportImport::export" title="Ftp Export" translate="title" sortOrder="10" />
-                    <resource id="Training_FtpExportImport::import" title="Ftp Import" translate="title" sortOrder="20" />                    
+                <resource id="Training_FtpOrderExport::menu" title="Ftp Export Import" translate="title" sortOrder="10">
+                    <resource id="Training_FtpOrderExport::export" title="Ftp Export" translate="title" sortOrder="10" />                                       
                 </resource>
             </resource>
         </resources>

@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
     <group id="export_orders">
-        <job name="export_orders" instance="Training\FtpExportImport\Controller\Adminhtml\Index\Export" method="execute">
+        <job name="export_orders" instance="Training\FtpOrderExport\Controller\Adminhtml\Index\Export" method="execute">
             <schedule>* * * * *</schedule>
         </job>
     </group>

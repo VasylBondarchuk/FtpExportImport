@@ -2,16 +2,16 @@
 
 declare(strict_types = 1);
 
-namespace Training\FtpExportImport\Block\Adminhtml;
+namespace Training\FtpOrderExport\Block\Adminhtml;
 
 use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Element\Template\Context;
-use Training\FtpExportImport\Model\FtpConnection;
+use Training\FtpOrderExport\Model\FtpConnection;
 use Magento\Sales\Model\ResourceModel\Order\CollectionFactory;
 use Magento\Sales\Api\OrderRepositoryInterface;
-use Training\FtpExportImport\Controller\Adminhtml\Index\Configs;
-use Training\FtpExportImport\Model\OrderStatus;
-use Training\FtpExportImport\Model\ProductTypes;
+use Training\FtpOrderExport\Controller\Adminhtml\Index\Configs;
+use Training\FtpOrderExport\Model\OrderStatus;
+use Training\FtpOrderExport\Model\OrderedProductTypes;
 
 class Export extends Template
 {
@@ -20,7 +20,7 @@ class Export extends Template
     protected $orderRepository;
     protected $configs;
     protected $orderStatuses;
-    private $productTypes;
+    private $OrderedProductTypes;
 
     public function __construct(
         Context $context,
@@ -29,7 +29,7 @@ class Export extends Template
         OrderRepositoryInterface $orderRepository,
         Configs $configs,
         OrderStatus $orderStatuses,
-        ProductTypes $productTypes,
+        OrderedProductTypes $OrderedProductTypes,
         array $data = []
     ) {
         $this->ftpConnection = $ftpConnection;
@@ -37,7 +37,7 @@ class Export extends Template
         $this->orderRepository = $orderRepository;
         $this->configs = $configs;
         $this->orderStatuses = $orderStatuses;
-        $this->productTypes = $productTypes;
+        $this->OrderedProductTypes = $OrderedProductTypes;
 
         parent::__construct($context, $data);
     }
@@ -47,7 +47,7 @@ class Export extends Template
         return $this->configs->getSelectedOrderStatus();
     }
 
-    public function getAllProductTypes()
+    public function getAllOrderedProductTypes()
     {
         return $this->configs->getSelectedProductsTypes();
     }

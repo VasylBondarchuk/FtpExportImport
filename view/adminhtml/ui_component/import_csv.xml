@@ -13,8 +13,8 @@
         <settings>
             <updateUrl path="mui/index/render"/>
         </settings>
-        <aclResource>Training_FtpExportImport::resource</aclResource>
-        <dataProvider class="Training\FtpExportImport\Ui\Component\DataProvider\CsvImport" name="import_csv_data_source">
+        <aclResource>Training_FtpOrderExport::resource</aclResource>
+        <dataProvider class="Training\FtpOrderExport\Ui\Component\DataProvider\CsvImport" name="import_csv_data_source">
             <settings>
                 <requestFieldName>id</requestFieldName>
                 <primaryFieldName>id</primaryFieldName>

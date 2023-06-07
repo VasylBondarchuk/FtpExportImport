@@ -1,9 +1,8 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
     <menu>
-        <add id="Training_FtpExportImport::menu" title="FTP-ExportImport" module="Training_FtpExportImport" sortOrder="10" resource="Magento_Backend::content"/>
-        <add id="Training_FtpExportImport::export" title="Export Orders" module="Training_FtpExportImport" sortOrder="20" parent="Training_FtpExportImport::menu" action="export/index/export" resource="Training_FtpExportImport::export"/>
-        <add id="Training_FtpExportImport::import" title="Import Data" module="Training_FtpExportImport" sortOrder="30" parent="Training_FtpExportImport::menu" action="import/index/import" resource="Training_FtpExportImport::import"/>
-        <add id="Training_FtpExportImport::configs" title="Configuration" translate="title" module="Training_FtpExportImport" sortOrder="40" parent="Training_FtpExportImport::menu" action="adminhtml/system_config/edit/section/export_import_configuration" resource="Training_FtpExportImport::menu"/>
+        <add id="Training_FtpOrderExport::menu" title="FTP-ExportOrders" module="Training_FtpOrderExport" sortOrder="10" resource="Magento_Backend::content"/>
+        <add id="Training_FtpOrderExport::export" title="Export Orders" module="Training_FtpOrderExport" sortOrder="20" parent="Training_FtpOrderExport::menu" action="export/index/export" resource="Training_FtpOrderExport::export"/>
+        <add id="Training_FtpOrderExport::configs" title="Configuration" translate="title" module="Training_FtpOrderExport" sortOrder="40" parent="Training_FtpOrderExport::menu" action="adminhtml/system_config/edit/section/export_import_configuration" resource="Training_FtpOrderExport::menu"/>
     </menu>
 </config>

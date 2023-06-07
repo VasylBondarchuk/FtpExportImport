@@ -2,13 +2,13 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Email:etc/email_templates.xsd">
     <template id="email_ftp_failure_template"
               label="email_ftp_failure_template"
-              module="Training_FtpExportImport"
+              module="Training_FtpOrderExport"
               file="email_ftp_failure_template.html"
               type="html"
               area="adminhtml"/>
     <template id="email_csv_creation_failure_template"
               label="email_csv_creation_failure_template"
-              module="Training_FtpExportImport"
+              module="Training_FtpOrderExport"
               file="email_csv_creation_failure_template.html"
               type="html"
               area="adminhtml"/>

@@ -1,12 +1,12 @@
 <?php
 
-namespace Training\FtpExportImport\Model;
+namespace Training\FtpOrderExport\Model;
 
 use Magento\Catalog\Model\Product\Type\Pool;
 use Magento\Catalog\Model\ProductTypes\ConfigInterface;
 use Magento\Framework\Data\OptionSourceInterface;
 
-class ProductTypes implements OptionSourceInterface
+class OrderedProductTypes implements OptionSourceInterface
 {   
 
     /**
@@ -137,11 +137,11 @@ class ProductTypes implements OptionSourceInterface
     public function getTypes()
     {
         if ($this->_types === null) {
-            $productTypes = $this->_config->getAll();
-            foreach ($productTypes as $productTypeKey => $productTypeConfig) {
-                $productTypes[$productTypeKey]['label'] = __($productTypeConfig['label']);
+            $OrderedProductTypes = $this->_config->getAll();
+            foreach ($OrderedProductTypes as $productTypeKey => $productTypeConfig) {
+                $OrderedProductTypes[$productTypeKey]['label'] = __($productTypeConfig['label']);
             }
-            $this->_types = $productTypes;
+            $this->_types = $OrderedProductTypes;
         }
         return $this->_types;
     }      
@@ -154,7 +154,7 @@ class ProductTypes implements OptionSourceInterface
         return $this->getOptions();
     }
 
-    public function getAllProductTypes()
+    public function getAllOrderedProductTypes()
     {
         $types= '';
         foreach ($this->toOptionArray() as $items) {

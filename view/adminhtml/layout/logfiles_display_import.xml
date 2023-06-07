@@ -3,7 +3,7 @@
     <body>
         <referenceContainer name="content">
             <uiComponent name="import_csv"/>
-            <block class="Training\FtpExportImport\Block\Adminhtml\Import" name="Import"  template="Training_FtpExportImport::import.phtml"/>
+            <block class="Training\FtpOrderExport\Block\Adminhtml\Import" name="Import"  template="Training_FtpOrderExport::import.phtml"/>
         </referenceContainer>
     </body>
 </page>

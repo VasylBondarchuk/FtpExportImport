@@ -1,9 +1,9 @@
 <?php
 declare(strict_types = 1);
 
-namespace Training\FtpExportImport\Model;
+namespace Training\FtpOrderExport\Model;
 
-use Training\FtpExportImport\Model\Configs;
+use Training\FtpOrderExport\Model\Configs;
 
 class FtpConnFailureEmail extends FailureEmailDetails
 {

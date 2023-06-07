@@ -8,7 +8,7 @@
             <class>separator-top</class>
             <label>Orders Export</label>
             <tab>Training</tab>
-            <resource>Training_FtpExportImport::menu</resource>
+            <resource>Training_FtpOrderExport::menu</resource>
             
             <!--FTP Connection Details -->
             
@@ -43,12 +43,12 @@
                 
                 <field id="order_status" translate="label" type="multiselect" sortOrder="60" showInDefault="1" showInWebsite="0" showInStore="0">
                     <label>Order status</label>
-                    <source_model>Training\FtpExportImport\Model\OrderStatus</source_model>
+                    <source_model>Training\FtpOrderExport\Model\OrderStatus</source_model>
                     <can_be_empty>1</can_be_empty>
                 </field>
                 <field id="products_types" translate="label" type="multiselect" sortOrder="70" showInDefault="1" showInWebsite="0" showInStore="0">
                     <label>Ordered Products Types</label>
-                    <source_model>Training\FtpExportImport\Model\ProductTypes</source_model>
+                    <source_model>Training\FtpOrderExport\Model\OrderedProductTypes</source_model>
                     <can_be_empty>1</can_be_empty>
                 </field>
             </group>

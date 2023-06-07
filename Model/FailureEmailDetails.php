@@ -2,9 +2,9 @@
 
 declare(strict_types = 1);
 
-namespace Training\FtpExportImport\Model;
+namespace Training\FtpOrderExport\Model;
 
-use Training\FtpExportImport\Helper\Email;
+use Training\FtpOrderExport\Helper\Email;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Framework\UrlInterface;
 

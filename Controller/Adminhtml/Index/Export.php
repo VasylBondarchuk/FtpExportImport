@@ -1,17 +1,17 @@
 <?php
 declare(strict_types=1);
 
-namespace Training\FtpExportImport\Controller\Adminhtml\Index;
+namespace Training\FtpOrderExport\Controller\Adminhtml\Index;
 
 use Magento\Framework\View\Result\PageFactory;
 use Magento\Framework\Filesystem\Driver\File;
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\Filesystem\Io\Ftp;
 use Magento\Framework\Message\ManagerInterface;
-use Training\FtpExportImport\Model\FtpConnection;
-use Training\FtpExportImport\Model\CsvExport;
-use Training\FtpExportImport\Model\Configs;
-use Magento\Framework\UrlInterface;
+use Training\FtpOrderExport\Model\FtpConnection;
+use Training\FtpOrderExport\Model\CsvExport;
+use Training\FtpOrderExport\Model\Configs;
+use Magento\Backend\Model\UrlInterface as BackendUrlInterface;
 
 class Export extends \Magento\Backend\App\Action {
 
@@ -55,12 +55,12 @@ class Export extends \Magento\Backend\App\Action {
      * @var Configs
      */
     private Configs $configs;
+    
 
     /**
-     * 
-     * @var UrlInterface
+     * @var BackendUrlInterface
      */
-    private UrlInterface $urlBuilder;
+    private $backendUrlBuilder;
 
     public function __construct(
             PageFactory $resultPageFactory,
@@ -70,8 +70,8 @@ class Export extends \Magento\Backend\App\Action {
             CsvExport $csvExport,
             Ftp $ftp,
             ManagerInterface $messageManager,
-            Configs $configs,
-            UrlInterface $urlBuilder
+            Configs $configs,            
+            BackendUrlInterface $backendUrlBuilder
     ) {
         $this->resultPageFactory = $resultPageFactory;
         $this->driverFile = $driverFile;
@@ -79,8 +79,8 @@ class Export extends \Magento\Backend\App\Action {
         $this->csvExport = $csvExport;
         $this->ftp = $ftp;
         $this->messageManager = $messageManager;
-        $this->configs = $configs;
-        $this->urlBuilder = $urlBuilder;
+        $this->configs = $configs;        
+        $this->backendUrlBuilder = $backendUrlBuilder;
 
         parent::__construct($context);
     }
@@ -90,7 +90,7 @@ class Export extends \Magento\Backend\App\Action {
             $this->messageManager->addComplexErrorMessage(
                     'addRedirectToSettingsMessage',
                     [
-                        'url' => $this->urlBuilder->getUrl(Configs::FTP_CONFIGS_PATH)
+                        'url' => $this->generateAdminConfigUrl()
                     ]
             );            
         }        
@@ -118,6 +118,16 @@ class Export extends \Magento\Backend\App\Action {
         $resultPage = $this->resultPageFactory->create();
         $resultPage->getConfig()->getTitle()->prepend(__('Export Orders to FTP Server'));
         return $resultPage;
-    }   
+    }
     
+    /**
+     * Generate URL for the admin configuration page
+     *
+     * @return string
+     */
+    public function generateAdminConfigUrl(): string
+    {        
+        return $this->backendUrlBuilder->getUrl(Configs::FTP_CONFIGS_PATH);       
+       
+    }
 }

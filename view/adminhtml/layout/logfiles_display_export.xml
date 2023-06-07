@@ -2,7 +2,7 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <referenceContainer name="content">
-            <block class="Training\FtpExportImport\Block\Adminhtml\Export" name="Export"  template="Training_FtpExportImport::export.phtml"/>
+            <block class="Training\FtpOrderExport\Block\Adminhtml\Export" name="Export"  template="Training_FtpOrderExport::export.phtml"/>
         </referenceContainer>
     </body>
 </page>

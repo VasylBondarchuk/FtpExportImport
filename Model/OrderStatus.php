@@ -1,6 +1,6 @@
 <?php
 
-namespace Training\FtpExportImport\Model;
+namespace Training\FtpOrderExport\Model;
 
 use Magento\Sales\Model\Order;
 use Magento\Sales\Model\Order\Config;
