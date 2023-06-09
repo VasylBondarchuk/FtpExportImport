@@ -81,7 +81,7 @@ class FtpConnection
      */
     public function getConnFailureReason() : string
     {
-        return $this->ftpConnFailureReason;
+        return $this->ftpConnFailureReason;        
     }
 
     /**

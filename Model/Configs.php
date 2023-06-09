@@ -12,6 +12,8 @@ class Configs
 {
     const FTP_CONFIGS_PATH = 'admin/system_config/edit/section/export_import_configuration/';
     
+    const EXPORT_ACTION_PATH = 'export/index/export/';
+    
     // FTP Connection Details
     const EXPORT_ENABLED = 'export_import_configuration/ftp_connection_details/enable';
     const FTP_HOST = 'export_import_configuration/ftp_connection_details/ftp_host';
@@ -83,7 +85,7 @@ class Configs
                ?? self::DEFAULT_MAX_CONNECTION_ATEMPTS;
     }
 
-    public function getSelectedOrderStatus()
+    public function getSelectedOrderStatus(): string
     {
         return $this->getConfigs(self::ORDER_STATUS)
                ?? $this->orderStatuses->getAllStatuses();

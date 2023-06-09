@@ -3,6 +3,6 @@
     <body>
         <referenceContainer name="content">
             <block class="Training\FtpOrderExport\Block\Adminhtml\Export" name="Export"  template="Training_FtpOrderExport::export.phtml"/>
-        </referenceContainer>
+        </referenceContainer>       
     </body>
 </page>

@@ -3,9 +3,6 @@
     <router id="admin">
         <route id="export" frontName="export">
             <module name="Training_FtpOrderExport"/>
-        </route>
-        <route id="import" frontName="import">
-            <module name="Training_FtpOrderExport"/>
-        </route>
+        </route>        
     </router>
 </config>

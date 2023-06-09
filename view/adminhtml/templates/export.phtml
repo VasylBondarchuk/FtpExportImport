@@ -1,30 +1,34 @@
-<?= $escaper->escapeHtml($block->getMessage()); ?>
+<!--Order status field -->
+<div class="fieldset admin__field">
+    <label for="order_status" class="admin__field-label">
+        <span><?= $block->escapeHtml(__('Order status :')) ?></span>                    
+    </label> 
+    <span><?= $block->getSelectedOrderStatus() ?></span>
+</div>
 
-<?php
+<!--Ordered Products Types field -->
+<div class="fieldset admin__field">
+    <label for="product_types" class="admin__field-label">
+        <span><?= $block->escapeHtml(__('Ordered Products Types :')) ?></span>                    
+    </label> 
+    <span><?= $block->getSelectedProductsTypes() ?></span>
+</div>
 
-$orders = $block->getOrdersDetails();
-
-//print_r($block->getProductsData($order));
-
-$ordersId = [];
-
-foreach ($orders as $order => $item) {
-    $ordersId[] = $item['entity_id'];
-}
-
-print_r($ordersId);
-
-echo "<br>";
-
-foreach ($ordersId as $id) {
-    $order = $block->getOrderData($id);
-
-    foreach ($order->getAllVisibleItems() as $item) {
-        if ($block->getProductsData($order)) { echo "Order id = $id ".($item->getProductType())."<br>";
-        }
-    }
-}
-echo "</br>";
-print_r($block->getAllOrderedProductTypes());
-echo "</br>";
-print_r($block->getAllOrderStatuses());
+<!--Button Export Orders -->
+<div class="fieldset admin__field">
+    <form id="export_orders"
+          class="admin__fieldset"
+          action="<?= $block->escapeUrl($block->getUrl($block->getExportActionPath())) ?>"
+          method="post">        
+              <?= $block->getBlockHtml('formkey') ?>
+        <div class="actions-toolbar">
+            <div class="primary">
+                <input type="hidden" name="hideit" id="hideit" value="" />
+                <button type="submit" title="<?= $block->escapeHtmlAttr(__('Export Orders')) ?>"
+                        class="action submit primary">
+                    <span><?= $block->escapeHtml(__('Export Orders')) ?></span>
+                </button>
+            </div>
+        </div>     
+    </form>        
+</div>

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Training\FtpOrderExport\Controller\Adminhtml\Index;
 
-use Magento\Framework\View\Result\PageFactory;
+use Magento\Framework\Controller\ResultFactory;
 use Magento\Framework\Filesystem\Driver\File;
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\Filesystem\Io\Ftp;
@@ -17,9 +17,9 @@ class Export extends \Magento\Backend\App\Action {
 
     /**
      * 
-     * @var PageFactory
+     * @var ResultFactory
      */
-    protected $resultPageFactory = false;
+    protected $resultFactory;
 
     /**
      * 
@@ -55,7 +55,6 @@ class Export extends \Magento\Backend\App\Action {
      * @var Configs
      */
     private Configs $configs;
-    
 
     /**
      * @var BackendUrlInterface
@@ -63,23 +62,23 @@ class Export extends \Magento\Backend\App\Action {
     private $backendUrlBuilder;
 
     public function __construct(
-            PageFactory $resultPageFactory,
+            ResultFactory $resultFactory,
             File $driverFile,
             FtpConnection $ftpConnection,
             Context $context,
             CsvExport $csvExport,
             Ftp $ftp,
             ManagerInterface $messageManager,
-            Configs $configs,            
+            Configs $configs,
             BackendUrlInterface $backendUrlBuilder
     ) {
-        $this->resultPageFactory = $resultPageFactory;
+        $this->resultFactory = $resultFactory;
         $this->driverFile = $driverFile;
         $this->ftpConnection = $ftpConnection;
         $this->csvExport = $csvExport;
         $this->ftp = $ftp;
         $this->messageManager = $messageManager;
-        $this->configs = $configs;        
+        $this->configs = $configs;
         $this->backendUrlBuilder = $backendUrlBuilder;
 
         parent::__construct($context);
@@ -88,13 +87,9 @@ class Export extends \Magento\Backend\App\Action {
     public function execute() {
         if (!$this->configs->isExportEnabled()) {
             $this->messageManager->addComplexErrorMessage(
-                    'addRedirectToSettingsMessage',
-                    [
-                        'url' => $this->generateAdminConfigUrl()
-                    ]
-            );            
-        }        
-        else {
+                'addRedirectToSettingsMessage',['url' => $this->adminConfigUrl()]
+            );
+        } else {
             // check if csv file to be exported was created
             try {
                 $fileName = $this->csvExport->getCsvName();
@@ -105,29 +100,42 @@ class Export extends \Magento\Backend\App\Action {
                 $this->messageManager->addErrorMessage(
                         __('Csv file to be exported was not created. Possible reason: %1', $e->getMessage()));
             }
-            // check if ftp connection was successful
-            if (!$this->ftpConnection->isConnSuccessful()) {
-                $this->ftpConnection->sendFtpConnFailureEmail();
-                $this->messageManager->addErrorMessage(
-                        __('FTP connection failed. Possible reason: %1', $this->ftpConnection->getConnFailureReason()));
-            } else {                
-                $this->ftp->write($fileName, $content);
-                $this->ftp->close();
-            }
+            $this->exportFileToFtp($fileName, $content);
         }
-        $resultPage = $this->resultPageFactory->create();
-        $resultPage->getConfig()->getTitle()->prepend(__('Export Orders to FTP Server'));
-        return $resultPage;
+        $resultRedirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
+        $resultRedirect->setPath('*/*/');
+        return $resultRedirect;
     }
-    
+
     /**
-     * Generate URL for the admin configuration page
+     * 
+     * @param string $fileName
+     * @param string $content
+     * @return void
+     * 
+     * Export file to FTP server
+     */
+    private function exportFileToFtp(string $fileName, string $content) : void {        
+        if (!$this->ftpConnection->isConnSuccessful()) {
+            $this->ftpConnection->sendFtpConnFailureEmail();
+            $this->messageManager->addErrorMessage(
+                    __('FTP connection failed. Possible reason: %1',
+                            $this->ftpConnection->getConnFailureReason()));
+        } else {
+            $this->ftp->write($fileName, $content);
+            $this->ftp->close();
+            $this->messageManager->addSuccessMessage(
+                    __('Orders were succsefully exported.')
+            );
+        }
+    }
+
+    /**
+     * Returns URL for the admin configuration page
      *
      * @return string
      */
-    public function generateAdminConfigUrl(): string
-    {        
-        return $this->backendUrlBuilder->getUrl(Configs::FTP_CONFIGS_PATH);       
-       
+    private function adminConfigUrl(): string {
+        return $this->backendUrlBuilder->getUrl(Configs::FTP_CONFIGS_PATH);
     }
 }
