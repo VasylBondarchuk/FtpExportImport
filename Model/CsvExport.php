@@ -40,18 +40,18 @@ class CsvExport
      * @var type
      */
     private $csvCreationFailureReason;
-    /**
+   /**
      * 
      * @var type
      */
-    private $csvExportFailureEmail;
+    private FailureEmailDetails $failureEmailDetails;
 
     public function __construct(
         File $file,
         OrdersDetails $ordersDetails,
         Csv $csvProcessor,
         DirectoryList $directoryList,
-        CsvExportFailureEmail $csvExportFailureEmail,
+        FailureEmailDetails $failureEmailDetails,
         Context $context
     ) {
         $this->file = $file;
@@ -59,7 +59,7 @@ class CsvExport
         $this->csvProcessor = $csvProcessor;
         $this->directoryList = $directoryList;
         $this->logger = $context->getLogger();
-        $this->csvExportFailureEmail = $csvExportFailureEmail;
+        $this->failureEmailDetails = $failureEmailDetails;
     }
 
     /**
@@ -68,7 +68,7 @@ class CsvExport
      */    
     public function getCsvName(): string
     {
-        return 'export_order_'.date("Y-m-d-H:i:s").'.csv';
+        return 'export_orders_'.date("Y-m-d-H:i:s") . '.csv';
     }
 
     /**
@@ -88,15 +88,19 @@ class CsvExport
     {
         // csv header
         $content[] = [
-            'order_id' => __('Order ID'),
-            'status' => __('Status'),
-            'total' => __('Total')
+            __('Order ID'),
+            __('Customer ID'),
+            __('Order Status'),
+            __('Order Total'),
+            __('Created At'),
         ];
         foreach ($this->ordersDetails->getSelectedOrders() as $order) {
             $content[] = [
                 $order->getId(),
+                $order->getData('customer_id'),
                 $order->getData('status'),
-                $order->getBaseGrandTotal()
+                $order->getData('base_grand_total'),
+                $order->getData('created_at')
             ];
         }
         return $content;
@@ -127,6 +131,14 @@ class CsvExport
 
     public function sendCsvCreationFailureEmail() : void
     {
-        $this->csvExportFailureEmail->sendCsvCreationFailureEmail($this->getCsvCreationFailureReason());
+        $this->failureEmailDetails->sendFailureEmail
+        (
+            $this->failureEmailDetails->getSenderDetails(["TSG","office@transoftgroup.com"]),
+            $this->failureEmailDetails->getRecipientEmail('office@transoftgroup.com'),
+            $this->failureEmailDetails->getTemplateIdentifier('email_csv_creation_failure_template'),
+            $this->failureEmailDetails->getTemplateOptions(),
+            $this->failureEmailDetails->getTemplateVars(['Developer', $this->getLink(), "TSG", $this->getCsvCreationFailureReason()])
+        );       
+        
     }
 }

@@ -10,8 +10,7 @@
             <tab>Training</tab>
             <resource>Training_FtpOrderExport::menu</resource>
             
-            <!--FTP Connection Details -->
-            
+            <!--FTP Connection Details -->            
             <group id="ftp_connection_details" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
                 <label>FTP Connection Details</label>
                 <field id="enable" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
@@ -36,20 +35,21 @@
                 </field>
             </group>
             
-            <!--Exported Orders Details -->    
-                        
+            <!--Exported Orders Details --> 
             <group id="exported_orders_details" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
                 <label>Exported Orders Details</label>
                 
                 <field id="order_status" translate="label" type="multiselect" sortOrder="60" showInDefault="1" showInWebsite="0" showInStore="0">
                     <label>Order status</label>
-                    <source_model>Training\FtpOrderExport\Model\OrderStatus</source_model>
-                    <can_be_empty>1</can_be_empty>
+                    <source_model>Training\FtpOrderExport\Model\OrdersDetails</source_model>
+                    <can_be_empty>0</can_be_empty>
+                    <validate>required-entry</validate>
                 </field>
                 <field id="products_types" translate="label" type="multiselect" sortOrder="70" showInDefault="1" showInWebsite="0" showInStore="0">
                     <label>Ordered Products Types</label>
                     <source_model>Training\FtpOrderExport\Model\OrderedProductTypes</source_model>
-                    <can_be_empty>1</can_be_empty>
+                    <can_be_empty>0</can_be_empty>
+                    <validate>required-entry</validate>
                 </field>
             </group>
         </section>

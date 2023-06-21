@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types = 1);
 
 namespace Training\FtpOrderExport\Model;
@@ -7,12 +6,26 @@ namespace Training\FtpOrderExport\Model;
 use Training\FtpOrderExport\Helper\Email;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Framework\UrlInterface;
+use Magento\Framework\App\Area;
 
 class FailureEmailDetails
 {
-    protected $email;
-    protected $storeManager;
-    protected $urlInterface;
+    /**
+     * 
+     * @var Email
+     */
+    private Email $email;
+    /**
+     * 
+     * @var StoreManagerInterface
+     */
+    private StoreManagerInterface $storeManager;
+    
+    /**
+     * 
+     * @var UrlInterface
+     */
+    private UrlInterface $urlInterface;
 
     public function __construct
     (
@@ -33,19 +46,25 @@ class FailureEmailDetails
 
     public function getSenderDetails(array $senderDetailsValues) : array
     {
-        return $this->getEmailDetails(['name','email'],$senderDetailsValues);
+        return $this->getEmailDetails(['name','email'], $senderDetailsValues);
     }
 
     public function getTemplateVars(array $templateVarValues) : array
     {
-        return $this->getEmailDetails(['recipientName', 'link', 'senderName', 'reason'], $templateVarValues);
+        return $this->getEmailDetails(
+            ['recipientName',
+            'link',
+            'senderName',
+            'reason'
+            ],
+            $templateVarValues);
     }
 
     public function getTemplateOptions() : array
     {
         return $this->getEmailDetails(
             ['area', 'store'],
-            [\Magento\Framework\App\Area::AREA_ADMINHTML, $this->storeManager->getStore()->getId()]);
+            [Area::AREA_ADMINHTML, $this->storeManager->getStore()->getId()]);
     }
 
     public function getRecipientEmail($recipientEmail) : string
@@ -65,6 +84,11 @@ class FailureEmailDetails
 
     public function sendFailureEmail($senderDetails, $recipientEmail, $templateIdentifier, $templateOptions, $templateVars)
     {
-        $this->email->sendEmail($senderDetails, $recipientEmail, $templateIdentifier, $templateOptions, $templateVars);
+        $this->email->sendEmail(
+                $senderDetails,
+                $recipientEmail,
+                $templateIdentifier,
+                $templateOptions,
+                $templateVars);
     }
 }

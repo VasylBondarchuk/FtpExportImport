@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types = 1);
 
 namespace Training\FtpOrderExport\Model;
@@ -22,12 +21,7 @@ class FtpConnection
      * 
      * @var type
      */
-    private FtpConnFailureEmail $ftpConnFailureEmail;
-    /**
-     * 
-     * @var type
-     */
-    private FtpDetails $ftpDetails;
+    private FailureEmailDetails $failureEmailDetails;    
     /**
      * 
      * @var Configs
@@ -36,11 +30,11 @@ class FtpConnection
 
     public function __construct(
         Ftp $ftp,
-        FtpConnFailureEmail $ftpConnFailureEmail,        
+        FailureEmailDetails $failureEmailDetails,        
         Configs $configs    
     ) {
         $this->ftp = $ftp;
-        $this->ftpConnFailureEmail = $ftpConnFailureEmail;        
+        $this->failureEmailDetails = $failureEmailDetails;        
         $this->configs = $configs;
     }
 
@@ -82,15 +76,7 @@ class FtpConnection
     public function getConnFailureReason() : string
     {
         return $this->ftpConnFailureReason;        
-    }
-
-    /**
-     * 
-     */
-    public function sendFtpConnFailureEmail()
-    {
-        $this->ftpConnFailureEmail->sendFtpConnFailureEmail($this->getConnFailureReason());
-    }
+    }    
     
     /**
      * 
@@ -118,5 +104,17 @@ class FtpConnection
     {
         return ($this->configs->getConnAttempts() > 0)
             ? $this->configs->getConnAttempts() : Configs::DEFAULT_FTP_CONN_ATTEMPTS;
+    }
+    
+    public function sendFtpConnFailureEmail()
+    {
+        $this->failureEmailDetails->sendFailureEmail
+        (
+            $this->failureEmailDetails->getSenderDetails(["TSG","office@transoftgroup.com"]),
+            $this->failureEmailDetails->getRecipientEmail('email@email.com'),
+            $this->failureEmailDetails->getTemplateIdentifier('email_ftp_failure_template'),
+            $this->failureEmailDetails->getTemplateOptions(),
+            $this->failureEmailDetails->getTemplateVars(['Customer', $this->failureEmailDetails->getLink(Configs::FTP_CONFIGS_PATH), "TSG", $this->getConnFailureReason()])
+        );
     }
 }

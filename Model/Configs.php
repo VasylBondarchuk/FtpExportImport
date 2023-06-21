@@ -5,13 +5,12 @@ namespace Training\FtpOrderExport\Model;
 
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Store\Model\ScopeInterface;
-use Training\FtpOrderExport\Model\OrderStatus;
 use Training\FtpOrderExport\Model\OrderedProductTypes;
 
 class Configs
 {
-    const FTP_CONFIGS_PATH = 'admin/system_config/edit/section/export_import_configuration/';
-    
+    // Button URL
+    const FTP_CONFIGS_PATH = 'adminhtml/system_config/edit/section/export_import_configuration';    
     const EXPORT_ACTION_PATH = 'export/index/export/';
     
     // FTP Connection Details
@@ -25,19 +24,14 @@ class Configs
     // Exported Orders Details
     const ORDER_STATUS = 'export_import_configuration/exported_orders_details/order_status';
     const PRODUCTS_TYPES = 'export_import_configuration/exported_orders_details/products_types';
-    const MULTISELECT_VALUES = [self::ORDER_STATUS, self::PRODUCTS_TYPES];
-    
+    const MULTISELECT_VALUES = [self::ORDER_STATUS, self::PRODUCTS_TYPES];    
 
     /**
      * 
      * @var ScopeConfigInterface
      */    
     private ScopeConfigInterface $scopeConfig;
-    /**
-     * 
-     * @var OrderStatus
-     */    
-    private OrderStatus $orderStatuses;
+    
     /**
      * 
      * @var OrderedProductTypes
@@ -45,12 +39,10 @@ class Configs
     private OrderedProductTypes $OrderedProductTypes;
 
     public function __construct(
-        ScopeConfigInterface $scopeConfig,
-        OrderStatus $orderStatuses,
+        ScopeConfigInterface $scopeConfig,       
         OrderedProductTypes $OrderedProductTypes
     ) {
-        $this->scopeConfig= $scopeConfig;
-        $this->orderStatuses = $orderStatuses;
+        $this->scopeConfig= $scopeConfig;        
         $this->OrderedProductTypes = $OrderedProductTypes;
     }
 
@@ -87,14 +79,13 @@ class Configs
 
     public function getSelectedOrderStatus(): string
     {
-        return $this->getConfigs(self::ORDER_STATUS)
-               ?? $this->orderStatuses->getAllStatuses();
+        return $this->getConfigs(self::ORDER_STATUS);               
     }
 
     public function getSelectedProductsTypes(): string
     {
         return $this->getConfigs(self::PRODUCTS_TYPES)
-               ?? $this->OrderedProductTypes->getAllOrderedProductTypes();
+               ?? $this->OrderedProductTypes->getAllProductTypes();
     }
 
     public function getMultiselectValues()

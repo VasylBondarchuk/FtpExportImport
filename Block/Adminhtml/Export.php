@@ -10,18 +10,42 @@ use Training\FtpOrderExport\Model\FtpConnection;
 use Magento\Sales\Model\ResourceModel\Order\CollectionFactory;
 use Magento\Sales\Api\OrderRepositoryInterface;
 use Training\FtpOrderExport\Model\Configs;
-use Training\FtpOrderExport\Model\OrderStatus;
+use Training\FtpOrderExport\Model\OrdersDetails;
 use Training\FtpOrderExport\Model\OrderedProductTypes;
 use Magento\Backend\Model\UrlInterface as BackendUrlInterface;
 
 class Export extends Template
 {
-    private $ftpConnection;
-    protected $orderCollectionFactory;
-    protected $orderRepository;
-    protected $configs;
-    protected $orderStatuses;
-    private $OrderedProductTypes;
+    /**
+     * 
+     * @var FtpConnection
+     */
+    private FtpConnection $ftpConnection;
+    /**
+     * 
+     * @var CollectionFactory
+     */
+    private CollectionFactory $orderCollectionFactory;
+    /**
+     * 
+     * @var OrderRepositoryInterface
+     */
+    private OrderRepositoryInterface $orderRepository;
+    /**
+     * 
+     * @var Configs
+     */
+    private Configs $configs;
+    /**
+     * 
+     * @var OrderStatus
+     */
+    private OrdersDetails $ordersDetails;
+    /**
+     * 
+     * @var OrderedProductTypes
+     */
+    private OrderedProductTypes $OrderedProductTypes;
     /**
      * @var BackendUrlInterface
      */
@@ -33,7 +57,7 @@ class Export extends Template
         CollectionFactory $orderCollectionFactory,
         OrderRepositoryInterface $orderRepository,
         Configs $configs,
-        OrderStatus $orderStatuses,
+        OrdersDetails $ordersDetails,
         OrderedProductTypes $OrderedProductTypes,
         BackendUrlInterface $backendUrlBuilder,    
         array $data = []
@@ -42,24 +66,25 @@ class Export extends Template
         $this->orderCollectionFactory = $orderCollectionFactory;
         $this->orderRepository = $orderRepository;
         $this->configs = $configs;
-        $this->orderStatuses = $orderStatuses;
+        $this->ordersDetails = $ordersDetails;
         $this->OrderedProductTypes = $OrderedProductTypes;
         $this->backendUrlBuilder = $backendUrlBuilder;
-
         parent::__construct($context, $data);
     }
 
-    public function getSelectedOrderStatus()
+    public function getSelectedOrderStatus() : array
     {
-        return $this->configs->getSelectedOrderStatus();
+        return explode(',',$this->configs->getSelectedOrderStatus());
     }
 
-    public function getSelectedProductsTypes()
+    public function getSelectedProductsTypes(): array
     {
-        return $this->configs->getSelectedProductsTypes();
+        $selectedProductTypes = $this->configs->getSelectedProductsTypes()
+                ?? $this->OrderedProductTypes->getAllProductTypes();
+        return explode(',', $selectedProductTypes);
     }
 
-    public function getMessage()
+    public function getMessage(): string
     {
         return $this->ftpConnection->getConnFailureReason();
     }
@@ -67,7 +92,6 @@ class Export extends Template
     public function getOrdersDetails()
     {
         $collection = $this->orderCollectionFactory->create()->getData();
-
         return $collection;
     }
 
@@ -114,6 +138,17 @@ class Export extends Template
     public function getExportActionPath(): string
     {        
         return Configs::EXPORT_ACTION_PATH;      
+       
+    }
+    
+    /**
+     * Generate URL for the admin configuration page
+     *
+     * @return string
+     */
+    public function getConfigsPath(): string
+    {        
+        return Configs::FTP_CONFIGS_PATH;      
        
     }
 }
