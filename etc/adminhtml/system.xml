@@ -11,46 +11,53 @@
             <resource>Training_FtpOrderExport::menu</resource>
             
             <!--FTP Connection Details -->            
-            <group id="ftp_connection_details" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+            <group id="ftp_connection_details" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>FTP Connection Details</label>
-                <field id="enable" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                <field id="enable" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Export Enabled</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="ftp_host" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0">
+                <field id="ftp_host" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label> FTP Host</label>
                     <validate>required-entry</validate>
                 </field>
-                <field id="user_name" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0">
+                <field id="user_name" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label> User name</label>
                     <validate>required-entry</validate>
                 </field>
-                <field id="user_password" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="0" showInStore="0">
+                <field id="user_password" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label> User password</label>
                     <validate>required-entry</validate>
                 </field>
-                <field id="connection_attempts" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="0" showInStore="0">
+                <field id="connection_attempts" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label> Number of connection attempts</label>
                     <validate>required-entry integer</validate>
                 </field>
             </group>
             
             <!--Exported Orders Details --> 
-            <group id="exported_orders_details" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+            <group id="exported_orders_details" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Exported Orders Details</label>
                 
-                <field id="order_status" translate="label" type="multiselect" sortOrder="60" showInDefault="1" showInWebsite="0" showInStore="0">
+                <field id="order_status" translate="label" type="multiselect" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Order status</label>
                     <source_model>Training\FtpOrderExport\Model\OrdersDetails</source_model>
                     <can_be_empty>0</can_be_empty>
                     <validate>required-entry</validate>
                 </field>
-                <field id="products_types" translate="label" type="multiselect" sortOrder="70" showInDefault="1" showInWebsite="0" showInStore="0">
+                <field id="products_types" translate="label" type="multiselect" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Ordered Products Types</label>
                     <source_model>Training\FtpOrderExport\Model\OrderedProductTypes</source_model>
                     <can_be_empty>0</can_be_empty>
                     <validate>required-entry</validate>
-                </field>
+                </field>  
+              
+                <field id="order_statuses" translate="label" type="multiselect" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Order Attributes</label>
+                    <source_model>Training\FtpOrderExport\Model\OrderAttributes</source_model>
+                    <can_be_empty>0</can_be_empty>
+                    <validate>required-entry</validate>
+                </field>                
             </group>
         </section>
     </system>

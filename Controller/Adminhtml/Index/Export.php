@@ -9,7 +9,7 @@ use Magento\Backend\App\Action\Context;
 use Magento\Framework\Filesystem\Io\Ftp;
 use Magento\Framework\Message\ManagerInterface;
 use Training\FtpOrderExport\Model\FtpConnection;
-use Training\FtpOrderExport\Model\CsvExport;
+use Training\FtpOrderExport\Model\CsvFileCreator;
 use Training\FtpOrderExport\Model\Configs;
 use Magento\Backend\Model\UrlInterface as BackendUrlInterface;
 
@@ -29,9 +29,9 @@ class Export extends \Magento\Backend\App\Action {
 
     /**
      * 
-     * @var CsvExport
+     * @var CsvFileCreator
      */
-    private CsvExport $csvExport;
+    private CsvFileCreator $CsvFileCreator;
 
     /**
      * 
@@ -66,7 +66,7 @@ class Export extends \Magento\Backend\App\Action {
             File $driverFile,
             FtpConnection $ftpConnection,
             Context $context,
-            CsvExport $csvExport,
+            CsvFileCreator $CsvFileCreator,
             Ftp $ftp,
             ManagerInterface $messageManager,
             Configs $configs,
@@ -75,7 +75,7 @@ class Export extends \Magento\Backend\App\Action {
         $this->resultFactory = $resultFactory;
         $this->driverFile = $driverFile;
         $this->ftpConnection = $ftpConnection;
-        $this->csvExport = $csvExport;
+        $this->CsvFileCreator = $CsvFileCreator;
         $this->ftp = $ftp;
         $this->messageManager = $messageManager;
         $this->configs = $configs;
@@ -92,15 +92,15 @@ class Export extends \Magento\Backend\App\Action {
         } else {
             // check if csv file to be exported was created
             try {
-                $fileName = $this->csvExport->getCsvName();
-                $filePath = $this->csvExport->createCsvFile();
+                $fileName = $this->CsvFileCreator->getCsvName();
+                $filePath = $this->CsvFileCreator->createCsvFile();
                 $content = $this->driverFile->fileGetContents($filePath);
+                $this->exportFileToFtp($fileName, $content);
             } catch (\Exception $e) {
-                $this->csvExport->sendCsvCreationFailureEmail();
+                $this->CsvFileCreator->sendCsvCreationFailureEmail();
                 $this->messageManager->addErrorMessage(
                         __('Csv file to be exported was not created. Possible reason: %1', $e->getMessage()));
-            }
-            $this->exportFileToFtp($fileName, $content);
+            }            
         }
         $resultRedirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
         $resultRedirect->setPath('*/*/');

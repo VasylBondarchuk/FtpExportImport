@@ -12,6 +12,7 @@ use Magento\Sales\Api\OrderRepositoryInterface;
 use Training\FtpOrderExport\Model\Configs;
 use Training\FtpOrderExport\Model\OrdersDetails;
 use Training\FtpOrderExport\Model\OrderedProductTypes;
+use Training\FtpOrderExport\Model\OrderAttributes;
 use Magento\Backend\Model\UrlInterface as BackendUrlInterface;
 
 class Export extends Template
@@ -43,9 +44,15 @@ class Export extends Template
     private OrdersDetails $ordersDetails;
     /**
      * 
-     * @var OrderedProductTypes
+     * @var orderedProductTypes
      */
-    private OrderedProductTypes $OrderedProductTypes;
+    private orderedProductTypes $orderedProductTypes;
+    
+    /**
+     * 
+     * @var OrderAttributes
+     */
+    private OrderAttributes $orderAttributes;
     /**
      * @var BackendUrlInterface
      */
@@ -58,7 +65,8 @@ class Export extends Template
         OrderRepositoryInterface $orderRepository,
         Configs $configs,
         OrdersDetails $ordersDetails,
-        OrderedProductTypes $OrderedProductTypes,
+        OrderedProductTypes $orderedProductTypes,
+        OrderAttributes $orderAttributes,    
         BackendUrlInterface $backendUrlBuilder,    
         array $data = []
     ) {
@@ -66,22 +74,28 @@ class Export extends Template
         $this->orderCollectionFactory = $orderCollectionFactory;
         $this->orderRepository = $orderRepository;
         $this->configs = $configs;
-        $this->ordersDetails = $ordersDetails;
-        $this->OrderedProductTypes = $OrderedProductTypes;
+        $this->ordersDetails = $ordersDetails;        
+        $this->orderedProductTypes = $orderedProductTypes;
+        $this->orderAttributes = $orderAttributes;
         $this->backendUrlBuilder = $backendUrlBuilder;
         parent::__construct($context, $data);
     }
 
     public function getSelectedOrderStatus() : array
     {
-        return explode(',',$this->configs->getSelectedOrderStatus());
+        return explode(',' , $this->configs->getSelectedOrderStatus());
     }
 
     public function getSelectedProductsTypes(): array
     {
         $selectedProductTypes = $this->configs->getSelectedProductsTypes()
-                ?? $this->OrderedProductTypes->getAllProductTypes();
+                ?? $this->orderedProductTypes->getAllProductTypes();
         return explode(',', $selectedProductTypes);
+    }
+    
+    public function getSelectedOrderAttributesLabels(): array
+    {
+        return $this->configs->getSelectedOrderAttributesLabels();        
     }
 
     public function getMessage(): string
@@ -95,12 +109,12 @@ class Export extends Template
         return $collection;
     }
 
-    public function getOrderData($order_id)
+    public function getOrderData(int $orderId)
     {
         try {
-            $order = $this->orderRepository->get($order_id);
+            $order = $this->orderRepository->get($orderId);
         } catch (\Magento\Framework\Exception\NoSuchEntityException $e) {
-            throw new \Magento\Framework\Exception\LocalizedException(__('This order no longer exists.'));
+            throw new \Magento\Framework\Exception\LocalizedException(__($e->getMessage()));
         }
         return $order;
     }
@@ -110,20 +124,10 @@ class Export extends Template
         try {
             $orders = $this->orderRepository;
         } catch (\Magento\Framework\Exception\NoSuchEntityException $e) {
-            throw new \Magento\Framework\Exception\LocalizedException(__('This order no longer exists.'));
+            throw new \Magento\Framework\Exception\LocalizedException(__($e->getMessage()));
         }
         return $orders;
-    }
-
-    public function getProductsData(\Magento\Sales\Model\Order $order): bool
-    {
-        $orderItems = $order->getItemsCollection(['bundle'], true);
-
-        foreach ($orderItems as $orderItem) {
-            return true;
-        }
-        return false;
-    }
+    }    
 
     public function displayMultiselectConfigs()
     {

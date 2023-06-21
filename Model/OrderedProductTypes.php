@@ -7,12 +7,11 @@ use Magento\Catalog\Model\ProductTypes\ConfigInterface;
 use Magento\Framework\Data\OptionSourceInterface;
 
 class OrderedProductTypes implements OptionSourceInterface
-{   
-
+{
     /**
      * @var ConfigInterface
      */
-    protected $config;
+    protected ConfigInterface $config;
     
     /**
      * 
@@ -28,7 +27,7 @@ class OrderedProductTypes implements OptionSourceInterface
      *
      * @return array
      */
-    public function getProductTypes() : array
+    private function getProductTypes() : array
     {        
         $productTypes = $this->config->getAll();
             foreach ($productTypes  as $productTypeKey => $productTypeConfig) {
@@ -40,7 +39,7 @@ class OrderedProductTypes implements OptionSourceInterface
     /**
      * @inheritdoc
      */
-    public function toOptionArray()
+    public function toOptionArray() : array
     {
         $options = [];
         foreach ($this->getProductTypes() as $productTypeId => $productType) {

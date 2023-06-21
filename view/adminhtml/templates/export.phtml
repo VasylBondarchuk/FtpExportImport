@@ -20,7 +20,21 @@
     <div style="padding-left: 20px;">
         <?php foreach ($block->getSelectedProductsTypes() as $productType): ?>   
             <ul>
-                <li><?= \ucfirst($productType) ?></li>
+                <li><?= \ucfirst($productType)  ?></li>
+            </ul>
+        <?php endforeach; ?>
+    </div>     
+</div>
+
+<!--Order attributes -->
+<div class="fieldset admin__field">
+    <label for="product_types" class="admin__field-label">
+        <span><?= $block->escapeHtml(__('Order Attributes :')) ?></span>                    
+    </label>
+    <div style="padding-left: 20px;">
+        <?php foreach ($block->getSelectedOrderAttributesLabels() as $attributeLabel): ?>   
+            <ul>
+                <li><?= $attributeLabel  ?></li>
             </ul>
         <?php endforeach; ?>
     </div>     

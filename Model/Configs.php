@@ -24,6 +24,7 @@ class Configs
     // Exported Orders Details
     const ORDER_STATUS = 'export_import_configuration/exported_orders_details/order_status';
     const PRODUCTS_TYPES = 'export_import_configuration/exported_orders_details/products_types';
+    const ORDER_ATTRIBUTES = 'export_import_configuration/exported_orders_details/order_statuses';
     const MULTISELECT_VALUES = [self::ORDER_STATUS, self::PRODUCTS_TYPES];    
 
     /**
@@ -86,6 +87,29 @@ class Configs
     {
         return $this->getConfigs(self::PRODUCTS_TYPES)
                ?? $this->OrderedProductTypes->getAllProductTypes();
+    }
+    
+    public function getSelectedOrderAttributes(): string
+    {
+        return $this->getConfigs(self::ORDER_ATTRIBUTES);
+               
+    }
+    
+    public function getSelectedOrderAttributesLabels(): array
+    {
+        $orderAttributes = explode(',', $this->getConfigs(self::ORDER_ATTRIBUTES));
+        $orderAttributesLabels = [];
+        foreach($orderAttributes as $attribute){
+            $orderAttributesLabels[] = $this->formatString($attribute);
+        }
+        return $orderAttributesLabels;
+               
+    }
+    
+    private function formatString(string $inputString): string {
+        $replacedString = str_replace('_', ' ', $inputString);
+        $formattedString = ucwords($replacedString);
+        return $formattedString;
     }
 
     public function getMultiselectValues()

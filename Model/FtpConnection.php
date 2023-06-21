@@ -42,7 +42,7 @@ class FtpConnection
      * 
      * @return bool
      */
-    public function ftpConnection()
+    public function getFtpConnection()
     {        
         try {
             $connection = $this->ftp->open($this->getFtpDetails());
@@ -62,7 +62,7 @@ class FtpConnection
         $numberOfAttempts = $this->getNumberOfAttempts();
 
         for ($i = 0; $i < $numberOfAttempts; $i++) {
-            if ($this->ftpConnection()) {
+            if ($this->getFtpConnection()) {
                 return true;
             }
         }

@@ -26,6 +26,5 @@ class Index extends \Magento\Backend\App\Action {
         $resultPage = $this->resultPageFactory->create();
         $resultPage->getConfig()->getTitle()->prepend(__('Export Orders to FTP Server'));
         return $resultPage;
-    }   
-    
+    }
 }

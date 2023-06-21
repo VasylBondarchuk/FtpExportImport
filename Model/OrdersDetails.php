@@ -122,8 +122,7 @@ class OrdersDetails implements ArrayInterface
             ? $this->orderConfig->getStateStatuses(self::ORDER_STATUSES)
             : $this->orderConfig->getStatuses();
 
-        $options = [['value' => '', 'label' => '']];
-
+        $options = [];
         foreach ($statuses as $code => $label) {
             $options[] = ['value' => $code, 'label' => $label];
         }
@@ -133,7 +132,6 @@ class OrdersDetails implements ArrayInterface
     public function getAllStatuses() : string
     {
         $statuses = '';
-
         foreach ($this->toOptionArray() as $items) {
             foreach ($items as $key => $value) {
                 if ($key == 'value') {
@@ -143,4 +141,14 @@ class OrdersDetails implements ArrayInterface
         }
         return trim($statuses, ',');
     }
+    
+     /**
+     * 
+     * @return string
+     */
+    public function getSelectedOrderAttributes() : array
+    {
+        $selectedOrderAttributes = $this->configs->getSelectedOrderAttributes();
+        return explode(',', $selectedOrderAttributes);
+    }   
 }
